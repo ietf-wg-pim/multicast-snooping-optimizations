@@ -16,7 +16,7 @@ area: Routing
 wg: pim
 kw: multicast snooping
 
-author: 
+author:
   -
     ins: N. Karstens
     name: Nate Karstens
@@ -28,7 +28,7 @@ author:
     name: Zhaohui Zhang
     org: Juniper Networks
     email: zzhang@juniper.net
-  
+
   -
     ins: L. Giuliano
     name: Lenny Giuliano
@@ -40,7 +40,7 @@ author:
     name: Naveen Ashik
     org: Juniper Networks
     email: nashik@juniper.net
-  
+
   -
     ins: J. Huang
     name: Joseph Huang
@@ -52,6 +52,8 @@ author:
 TODO: provide abstract
 
 TODO: ensure all references are accounted for (e.g., IGMPvX, MLDvX, pim)
+
+TODO: ensure tone of document is for a standard, not informational (i.e., don't use recommendations, use requirements)
 
 --- middle
 
@@ -152,13 +154,15 @@ Note that the decision to forward traffic based on group-based port membership t
 
 ## Non-Routable Multicast Traffic
 
-Multicast snooping switches shall not forward traffic to the multicast router port if the traffic is known to be non-routable.
+Multicast snooping switches shall only forward traffic to the multicast router port if the traffic is known to be routable.
 
-{{!RFC4541}} section 3 discusses challenges associated with IPv6 addresses overlapping when they are mapped to DMAC addresses. Multicast snooping switches should properly account for this possibility when implementing this rule. In the event of an address collision, the recommended practice is to forward the traffic and alert the network administrator of the problem.
+{{!RFC4541}} section 3 discusses challenges associated with IPv6 addresses overlapping when they are mapped to DMAC addresses. Multicast snooping switches should account for this possibility when implementing this requirement. In the event of an address collision, the recommendation is to forward the traffic and alert the network administrator of the problem.
 
 TODO: How should this alert work, is there a YANG model we should update?
 
 ## Routable Multicast Traffic
+
+TODO: add reference for 7761 (PIM)
 
 Multicast snooping switches shall begin in a state where all routable, any-source traffic shall be sent to the multicast router, which will route it outside of the network. When the traffic reaches the RP, the RP determines if it is interested in the traffic. If the RP is not interested in the traffic, then it will send a PIM prune message back to the multicast router.
 
@@ -173,7 +177,7 @@ Note that source-specific traffic is handled differently because PIM will send a
 # Security Considerations
 
 To be added.
-  
+
 # IANA Considerations
 
 This document does not have any IANA assignments/requests.
