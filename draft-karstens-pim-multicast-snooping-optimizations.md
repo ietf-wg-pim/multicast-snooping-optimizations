@@ -132,6 +132,8 @@ Multicast snooping switches shall not forward General Query messages from the al
 
 Multicast snooping switches shall only forward General Query messages from non-zero source addresses. This ensures that the network is aware of any multicast router that is present on the network. Accordingly, the absense of a General Query message from a non-zero source address can be inferred to mean that the network does not have a multicast router.
 
+TODO: several RFCs require query messages to use a valid IPv6 link-local source address (e.g., RFC 2710 section 3, RFC 3590 section 4, and RFC 3810 section 5.1.14) and RFC 4541 does not update these documents
+
 TODO: Is there a disrepancy between requiring General Query messages to be forwarded to multicast router ports, while at the same time being able to use the absense of a Query from a non-zero source address to mean that there is no multicast router?
 
 TODO: use a term like "Querier Ports" to indicate a port that an all-zeroes Query is received on
