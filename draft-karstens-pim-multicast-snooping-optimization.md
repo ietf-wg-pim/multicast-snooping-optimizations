@@ -4,7 +4,7 @@ coding: utf-8
 title: Multicast Snooping Optimizations
 abbrev: Multicast Snooping Optimizations
 docname: draft-karstens-pim-multicast-snooping-optimization-00
-updates: 4541
+updates: 3810, 4541
 category: std
 submissionType: IETF
 
@@ -116,13 +116,31 @@ TODO: explicitly mention that IGMPv3 and MLDv2 are requirements for this protoco
 
 This document refers to IGMP snooping and MLD snooping collectively as "multicast snooping".
 
-The all-zeroes address refers to address `0.0.0.0` in IGMP contexts and `::` in MLD contexts.
+TODO: if there are notable differences then mention something like "except where there are notable differences".
 
 The terms Any-Source Multicast and Source-Specific Multicast (see {{!RFC3569}}) are respectively abbreviated ASM and SSM.
 
 TODO: do we want to define "multicast snooping switch"? Should we have an abbreviation?
 
-TODO: if there are notable differences then mention something like "except where there are notable differences".
+# Proxy Query Messages
+
+{{!RFC4541}} section 2.1.1 describes a special-case IGMP Query message with an IPv4 source address of 0.0.0.0. It would appear that the equivalent for MLD would be a Query message with the IPv6 source address set to the unspecified address (::), but several documents prohibit this:
+
+* {{?RFC2710}} section 3 requires all MLD messages to be sent with a IPv6 link-local source address
+* {{?RFC3590}} section 4 requires MLD Query messages to be sent with a valid IPv6 link-local source address
+* {{?RFC3810}} section 5.1.14 not only requires MLD Query messages to be sent with a valid IPv6 link-local source address, but also that nodes MUST discard Query messages with an IPv6 source address that is not a valid IPv6 link-local address
+
+Instead of working against established precedent, this document modifies the Query message described in {{!RFC3810}} section 5.1, repurposing the reserved bit immediately preceding the S flag as a new P (Proxy Query) flag:
+
+    +-+-+-+-+-+-+-+-+
+    | Res |P|S| QRV |
+    +-+-+-+-+-+-+-+-+
+
+If an IPv6 multicast router receives a Query with the P flag set, then it SHALL NOT use that message in the querier election process described in {{?RFC3810}} section 7.6.2.
+
+Note that this document does not reassign the corresponding bit in the IGMP Query message ({{?RFC3376}} section 4.1). That message only has four reserved bits, so it seemed important to leave that bit available for future use.
+
+This document uses the term Proxy Query to refer to an IGMP Query with an IPv4 source address of 0.0.0.0 or an MLD Query with the P flag set.
 
 # Control Plane Operations
 
