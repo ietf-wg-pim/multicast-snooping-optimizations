@@ -110,7 +110,7 @@ The next logical step in this direction would be to require multicast snooping s
 
 However, this document uses a different approach, electing instead to use General Query messages to ensure membership information is distributed to all multicast snooping switches on the network. This solution is less complicated than methods that focus on Membership Reports, which reduces the likelihood for error. In addition, compatibility between different versions of IGMP and MLD are less of a concern because each protocol's Query messages are compatible with earlier versions of the protocol.
 
-TODO: explicitly mention that IGMPv3 and MLDv2 are requirements for this protocol, but only on switches
+Multicast snooping switches implementing this design shall use IGMPv3 ({{!RFC3376}}), MLDv2 ({{!RFC3810}}), or both. Multicast routers on the network must also use these protocol versions, and satisfy the requirements listed in {{routers}}. Network hosts may use earlier versions of the protocols.
 
 ## Terminology
 
@@ -180,7 +180,7 @@ Multicast snooping switches shall only forward traffic to the multicast router p
 
 TODO: How should this alert work, is there a YANG model we should update?
 
-## Routable Multicast Traffic
+## Routable Multicast Traffic {#routers}
 
 TODO: add reference for 7761 (PIM)
 
