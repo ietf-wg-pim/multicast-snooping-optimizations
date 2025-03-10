@@ -86,6 +86,7 @@ The following diagram depicts an example network that can be used to illustrate 
     |  H1  |    |  H2  |    |  H3  |
     |      |    |      |    |      |
     \------/    \------/    \------/
+{: title="Example Network"}
 
 S1 has designated its port connected to S2 as a multicast router port.
 
