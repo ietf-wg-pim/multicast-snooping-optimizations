@@ -109,7 +109,7 @@ This rule prevents S2 from forwarding the Membership Report from H4 to S1, so S1
 
 The next logical step in this direction would be to require multicast snooping switches to use some method to identify the nature of the device connected to each port (switch or host, IGMP/MLD version, etc.). This information would then be used to help control the distribution of Membership Reports.
 
-However, this document uses a different approach, electing instead to use General Query messages to ensure membership information is distributed to all multicast snooping switches on the network. This solution is less complicated than methods that focus on Membership Reports, which reduces the likelihood for error. In addition, compatibility between different versions of IGMP and MLD are less of a concern because each protocol's Query messages are compatible with earlier versions of the protocol.
+However, this document uses a different approach, choosing instead to use General Query messages to ensure membership information is distributed to all multicast snooping switches on the network. This solution is less complicated than methods that focus on Membership Reports, which reduces the likelihood for error. In addition, compatibility between different versions of IGMP and MLD are less of a concern because each protocol's Query messages are compatible with earlier versions of the protocol.
 
 Multicast snooping switches implementing this design shall use IGMPv3 ({{!RFC3376}}), MLDv2 ({{!RFC3810}}), or both. Multicast routers on the network must also use these protocol versions, PIM-SM ({{!RFC7761}}), and satisfy the requirements listed in {{routers}}. Network hosts may use earlier versions of the protocols.
 
@@ -139,7 +139,7 @@ Instead of working against established precedent, this document modifies the Que
 
 If an IPv6 multicast router receives a Query with the P flag set, then it SHALL NOT use that message in the querier election process described in {{?RFC3810}} section 7.6.2.
 
-Note that this document does not reassign the corresponding bit in the IGMP Query message ({{?RFC3376}} section 4.1). That message only has four reserved bits, so it seemed important to leave that bit available for future use.
+Note that this document does not reassign the corresponding bit in the IGMP Query message ({{?RFC3376}} section 4.1). That message only has four reserved bits, so it seemed better to leave that bit available for future use.
 
 This document uses the term Proxy Query to refer to an IGMP Query with an IPv4 source address of 0.0.0.0 or an MLD Query with the P flag set.
 
