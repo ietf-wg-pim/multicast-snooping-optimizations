@@ -51,10 +51,6 @@ author:
 
 TODO: provide abstract
 
-TODO: ensure all references are accounted for (e.g., IGMPvX, MLDvX, pim)
-
-TODO: ensure tone of document is for a standard, not informational (i.e., don't use recommendations, use requirements)
-
 --- middle
 
 # Introduction
@@ -167,9 +163,9 @@ TODO: if a switch receives a leave and there is only one port remaining and that
 
 # Data Plane Operations
 
-Multicast snooping switches should continue to follow the data forwarding rules outlined in {{!RFC4541}} section 2.1.2. In order to optimize traffic distribution on the network, this section contains two refinements to the recommendation to forward traffic to the multicast router port, based on whether the multicast traffic is routable or non-routable.
+Multicast snooping switches shall follow the data forwarding rules outlined in {{!RFC4541}} section 2.1.2. In order to optimize traffic distribution on the network, this section contains two refinements to the recommendation to forward traffic to the multicast router port, based on whether the multicast traffic is routable or non-routable.
 
-To some extent, what constitutes a routable multicast address is subject to the overall design of the network, so it may be beneficial for multicast snooping switch vendors to allow configuration for how multicast addresses are classified.
+To some extent, what constitutes a routable multicast address is subject to the overall design of the network, so multicast snooping switch vendors should allow configuration for how multicast addresses are classified.
 
 Note that the decision to forward traffic based on group-based port membership tables is independent of the decision to forward traffic to the multicast router port. In other words, traffic may still be forwarded to the multicast router port because it is a group member.
 
@@ -183,7 +179,7 @@ TODO: How should this alert work, is there a YANG model we should update?
 
 ## Routable Multicast Traffic {#routers}
 
-Multicast snooping switches shall begin in a state where all routable, ASM traffic shall be sent to the multicast router, which will route it outside of the network. When the traffic reaches the RP, the RP determines if it is interested in the traffic. If the RP is not interested in the traffic, then it will send a PIM prune message back to the multicast router.
+Multicast snooping switches shall begin in a state where all routable, ASM traffic is sent to the multicast router, which will route it outside of the network. When the traffic reaches the RP, the RP determines if it is interested in the traffic. If the RP is not interested in the traffic, then it will send a PIM prune message back to the multicast router.
 
 When the multicast router receives the PIM prune message, it shall send a report message excluding the multicast address back to the multicast snooping switch. Multicast snooping switches shall propagate the exclusion message back toward the source of the multicast stream until it reaches a switch that contains a port that is a member of that multicast group.
 
