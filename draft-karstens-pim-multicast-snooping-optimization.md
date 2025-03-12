@@ -65,23 +65,25 @@ This router-centric view of multicast traffic distribution is likely rooted in t
 
 The following diagram depicts an example network that can be used to illustrate the point:
 
-                            /------\
-                            |      |
-                   //=======|  S2  |=======\\
-                   ||       |      |       ||
-                   mr       \------/       ||
-                /------\                /------\
-                |      |                |      |
-       //=======|  S1  |=======\\       |  H4  |
-       ||       |      |       ||       |      |
-       ||       \------/       ||       \------/
-       ||          ||          ||
-       ||          ||          ||
-    /------\    /------\    /------\
-    |      |    |      |    |      |
-    |  H1  |    |  H2  |    |  H3  |
-    |      |    |      |    |      |
-    \------/    \------/    \------/
+~~~~
+                        /------\
+                        |      |
+               //=======|  S2  |=======\\
+               ||       |      |       ||
+               mr       \------/       ||
+            /------\                /------\
+            |      |                |      |
+   //=======|  S1  |=======\\       |  H4  |
+   ||       |      |       ||       |      |
+   ||       \------/       ||       \------/
+   ||          ||          ||
+   ||          ||          ||
+/------\    /------\    /------\
+|      |    |      |    |      |
+|  H1  |    |  H2  |    |  H3  |
+|      |    |      |    |      |
+\------/    \------/    \------/
+~~~~
 {: title="Example Network"}
 
 S1 has designated its port connected to S2 as a multicast router port.
@@ -133,9 +135,11 @@ TODO: do we want to define "multicast snooping switch"? Should we have an abbrev
 
 Instead of working against established precedent, this document modifies the Query message described in {{!RFC3810, Section 5.1}}, repurposing the reserved bit immediately preceding the S flag as a new P (Proxy Query) flag:
 
-    +-+-+-+-+-+-+-+-+
-    | Res |P|S| QRV |
-    +-+-+-+-+-+-+-+-+
+~~~~
++-+-+-+-+-+-+-+-+
+| Res |P|S| QRV |
++-+-+-+-+-+-+-+-+
+~~~~
 
 If an IPv6 multicast router receives a Query with the P flag set, then it SHALL NOT use that message in the querier election process described in {{?RFC3810, Section 7.6.2}}.
 
