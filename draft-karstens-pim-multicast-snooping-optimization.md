@@ -93,10 +93,12 @@ Suppose the example network contains two multicast streams:
 
 The problem is that Stream 1 is forwarded from S1 to S2 even though there are no consumers of this data. This is due to the following data forwarding rule in {{!RFC4541}} section 2.1.2:
 
+{:quote}
 > Packets with a destination IP address outside 224.0.0.X which are not IGMP should be forwarded according to group-based port membership tables and must also be forwarded on router ports.
 
 While it would be tempting to ignore this rule so that Stream 1 is no longer forwarded, this would also prevent Stream 2 from reaching H4. This is because of the following IGMP forwarding rule in {{!RFC4541}} section 2.1.1:
 
+{:quote}
 > A snooping switch should forward IGMP Membership Reports only to those ports where multicast routers are attached.
 
 This rule prevents S2 from forwarding the Membership Report from H4 to S1, so S1 does not mark the port connected to S2 as a member of the multicast group for Stream 2.
@@ -114,6 +116,8 @@ Multicast snooping switches implementing this design shall use IGMPv3 ({{!RFC337
 This document refers to IGMP snooping and MLD snooping collectively as "multicast snooping".
 
 TODO: if there are notable differences then mention something like "except where there are notable differences".
+
+IGMPv3 Membership Report messages and MLDv2 Multicast Listener Report messages are referred to collectively as Reports.
 
 The terms Any-Source Multicast and Source-Specific Multicast (see {{!RFC3569}}) are respectively abbreviated ASM and SSM.
 
@@ -141,11 +145,31 @@ This document uses the term Proxy Query to refer to an IGMP Query with an IPv4 s
 
 # Control Plane Operations
 
-Each multicast snooping switch on the network shall periodically send General Proxy Query messages to all active ports. The interval between General Proxy Query messages is specified by a new timer, called Switch Proxy Query Interval. (TODO: describe the effect of adjusting the timer and specify a default value).
+Multicast snooping switches shall maintain a group-based port membership table that indicates which port(s) contain members for each tracked group. The requirements in this section are ultimately related to managing this table, using IGMP/MLD to communicate its contents to adjacent nodes, and making changes in response to IGMP/MLD messages received from adjacent nodes.
+
+Multicast snooping switches shall maintain a new Group-Port Membership Interval timer for each group and port combination in the group-based port membership table. This is analagous to the Group Membership Interval in {{!RFC3376}} section 8.4 and Multicast Address Listening Interval in {{!RFC3810}} section 9.4.
+
+TODO: describe when the timer is set/reset and what happens when it expires
+
+Multicast snooping switches shall track two flags for each port: the Multicast Router flag and the Proxy Querier flag.
+
+The Multicast Router flag is set for a port when a non-Proxy Query is received on that port. The multicast snooping switch shall maintain a new Multicast Router Timeout timer for each port, which is somewhat analogous to the Other Querier Present Timeout timers in {{!RFC3376}} section 8.5 and {{!RFC3810}} section 9.5. This timer is reset each time a non-Proxy Query is received on the port. If the timer expires, then the flag is cleared.
+
+The Proxy Querier flag is set for a port when a Proxy Query is received on that port. The multicast snooping switch shall maintain a new Proxy Querier Timeout timer for each port. This timer is reset each time a Proxy Query is received on the port. If the timer expires, then the flag is cleared.
+
+If neither the Multicast Router or Proxy Querier flag is set for a port, then it can be inferred that the port is connected either to a host or to a switch that does not implement this design.
+
+## Transmitting Periodic Proxy Queries
+
+Each multicast snooping switch on the network shall periodically send General Proxy Query messages to all active ports. On startup, or after a port transitions from an inactive state to an active state, [Startup Switch Proxy Query Count] General Proxy Query messages shall be sent with [Startup Switch Proxy Query Interval] between each message. After this, General Proxy Query messages shall be sent with [Switch Proxy Query Interval] between each message.
+
+The QQIC field for each General Proxy Query message shall be set to [Startup Switch Proxy Query Interval] or [Switch Proxy Query Interval], as appropriate (see {{!RFC3376}} section 4.1.7 or {{!RFC3810}} section 5.1.9).
 
 TODO: Important to send to multicast router ports because multicast router may have IRB (Integrated Routing and Bridging) connected, or be running a PIM-to-IGMP proxy.
 
-Multicast snooping switches shall not forward Proxy Query messages. Instead, the multicast snooping switch shall reply with an IGMPv3 Membership Report or MLDv2 Multicast Listener Report, as appropriate, that contains the aggregate of all valid report messages received by the multicast snooping switch. This report message shall only be sent to the port that the General Query message was received on; this ensures that a report message generated by the multicast snooping switch does not result in report suppression in IGMPv2 or MLDv1 hosts. (TODO: the report should not be sent back if the port is the only port that is a member)
+## Receiving Proxy Queries
+
+Multicast snooping switches shall not forward Proxy Query messages. Instead, the multicast snooping switch shall reply with a Report that contains the aggregate of all valid Report messages received by the multicast snooping switch. This Report message shall only be sent to the port that the General Query message was received on; this ensures that a Report message generated by the multicast snooping switch does not result in Report suppression in IGMPv2 or MLDv1 hosts. (TODO: the Report should not be sent back if the port is the only port that is a member)
 
 Multicast snooping switches shall only forward General Query messages that are not Proxy Queries. This ensures that the network is aware that a multicast router is present. Accordingly, if only Proxy Query messages are received, then it can be inferred that there is no multicast router on the network.
 
@@ -153,13 +177,17 @@ TODO: Does it make sense to require General Query messages be forwarded to multi
 
 TODO: use a term like "Querier Ports" to indicate a port that a Proxy Query is received on
 
-TODO: need to handle unsolicited reports. That needs to be sent to Querier Ports
+TODO: need to handle unsolicited Rrports. That needs to be sent to Querier Ports
 
 TODO: need to handle leave and group-specific queries -- snooping switches will keep track of the ports that have group membership. When it receives a leave then it subtracts the port from membership, but only forwards the leave if there are no other ports with group membership
 
 TODO: group membership timer expiration is the same as an explicit leave
 
 TODO: if a switch receives a leave and there is only one port remaining and that port is a querier port, then send a leave to that querier port
+
+## Receiving Reports
+
+## Transmitting Reports
 
 # Data Plane Operations
 
@@ -181,13 +209,33 @@ TODO: How should this alert work, is there a YANG model we should update?
 
 Multicast snooping switches shall begin in a state where all routable, ASM traffic is sent to the multicast router, which will route it outside of the network. When the traffic reaches the RP, the RP determines if it is interested in the traffic. If the RP is not interested in the traffic, then it will send a PIM prune message back to the multicast router.
 
-When the multicast router receives the PIM prune message, it shall send a report message excluding the multicast address back to the multicast snooping switch. Multicast snooping switches shall propagate the exclusion message back toward the source of the multicast stream until it reaches a switch that contains a port that is a member of that multicast group.
+When the multicast router receives the PIM prune message, it shall send a Report message excluding the multicast address back to the multicast snooping switch. Multicast snooping switches shall propagate the exclusion message back toward the source of the multicast stream until it reaches a switch that contains a port that is a member of that multicast group.
 
 The fact that an exclusion message was received on the multicast router port should be recorded so that the network can be properly updated in the case of future changes to group-based port membership. For example, if a multicast snooping switch stops propagating an exclusion message because it contains at least one port that is a member of the multicast group, then the switch should send an exclude message back towards the source of the multicast stream when the last port is removed from membership in the multicast group.
 
 TODO: is this a problem? we woule be preventing future refinements where an exclude message could be used to leave the have the port leave group membership
 
 Note that SSM traffic is handled differently because PIM will send a request to receive the traffic, so the recommendations in this section only apply to ASM traffic.
+
+# List of Timers, Counters and Their Default Values
+
+TODO: for each section, describe the effect of adjusting the timer and specify a default value
+
+## Group-Port Membership Interval
+
+TODO
+
+## Switch Proxy Query Interval
+
+This interval is analogous to the Query Interval in {{!RFC3376}} section 8.2 and {{!RFC3810}} section 9.2, except it denotes the interval between General Proxy Queries sent by the multicast snooping switch.
+
+## Startup Switch Proxy Query Interval
+
+This interval is analogous to the Startup Query Interval in {{!RFC3376}} section 8.6 and {{!RFC3810}} section 9.6, except it denotes the interval between General Proxy Queries sent by the multicast snooping switch at startup.
+
+## Startup Switch Proxy Query Count
+
+This interval is analogous to the Startup Query Count in {{!RFC3376}} section 8.7 and {{!RFC3810}} section 9.7, except it denotes the number of General Proxy Queries sent on startup, separated by the Startup Switch Proxy Query Interval.
 
 # Security Considerations
 
