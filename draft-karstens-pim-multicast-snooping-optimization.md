@@ -250,6 +250,7 @@ To be added.
 This document does not have any IANA assignments/requests.
 
 # Acknowledgements
+{: numbered="false"}
 
 The authors would like to recognize the following individuals for their contributions to this research:
 
