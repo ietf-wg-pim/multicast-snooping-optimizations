@@ -168,7 +168,7 @@ This document uses the term Proxy Query to refer to an IGMP Query with an IPv4 s
 
 Multicast snooping switches shall maintain a group-based port membership table that indicates which port(s) contain members for each tracked group. The requirements in this section are ultimately related to managing this table, using IGMP/MLD to communicate its contents to adjacent nodes, and making changes in response to IGMP/MLD messages received from adjacent nodes.
 
-Multicast snooping switches shall maintain a new Group-Port Membership Interval timer for each group and port combination in the group-based port membership table. This is analagous to the Group Membership Interval in {{!-IGMPv3, Section 8.4}} and Multicast Address Listening Interval in {{!-MLDv2, Section 9.4}}.
+Multicast snooping switches shall maintain a new Group/Port Membership Interval timer for each group and port combination in the group-based port membership table (see {{group-port-membership-interval}}).
 
 TODO: describe when the timer is set/reset and what happens when it expires
 
@@ -182,7 +182,7 @@ If neither the Multicast Router or Proxy Querier flag is set for a port, then it
 
 ## Transmitting Periodic Proxy Queries
 
-Each multicast snooping switch on the network shall periodically send General Proxy Query messages to all active ports. On startup, or after a port transitions from an inactive state to an active state, [Startup Switch Proxy Query Count] General Proxy Query messages shall be sent with [Startup Switch Proxy Query Interval] between each message. After this, General Proxy Query messages shall be sent with [Switch Proxy Query Interval] between each message.
+Each multicast snooping switch on the network shall periodically send General Proxy Query messages to all active ports. On startup, or after a port transitions from an inactive state to an active state, [Startup Switch Proxy Query Count] (see {{startup-switch-proxy-query-count}}) General Proxy Query messages shall be sent with [Startup Switch Proxy Query Interval] (see {{startup-switch-proxy-query-interval}}) between each message. After this, General Proxy Query messages shall be sent with [Switch Proxy Query Interval] (see {{switch-proxy-query-interval}}) between each message.
 
 The QQIC field for each General Proxy Query message shall be set to [Startup Switch Proxy Query Interval] or [Switch Proxy Query Interval], as appropriate (see {{!-IGMPv3, Section 4.1.7}} or {{!-MLDv2, Section 5.1.9}}).
 
@@ -240,21 +240,21 @@ Note that SSM traffic is handled differently because PIM will send a request to 
 
 # List of Timers, Counters and Their Default Values
 
-TODO: for each section, describe the effect of adjusting the timer and specify a default value
+TODO: Add a note indicating that these should be consistent with the analagous timers on a single link (like IGMPv3 section 8 or MLDv2 section 9 requires)
 
-## Group-Port Membership Interval
+## Group/Port Membership Interval {#group-port-membership-interval}
 
-TODO
+This interval is analagous to the Group Membership Interval in {{!-IGMPv3, Section 8.4}} and Multicast Address Listening Interval in {{!-MLDv2, Section 9.4}}, except it denotes how long a given group/port combination should remain in the group-based port membership table.
 
-## Switch Proxy Query Interval
+## Switch Proxy Query Interval {#switch-proxy-query-interval}
 
 This interval is analogous to the Query Interval in {{!-IGMPv3, Section 8.2}} and {{!-MLDv2, Section 9.2}}, except it denotes the interval between General Proxy Queries sent by the multicast snooping switch.
 
-## Startup Switch Proxy Query Interval
+## Startup Switch Proxy Query Interval {#startup-switch-proxy-query-interval}
 
 This interval is analogous to the Startup Query Interval in {{!-IGMPv3, Section 8.6}} and {{!-MLDv2, Section 9.6}}, except it denotes the interval between General Proxy Queries sent by the multicast snooping switch at startup.
 
-## Startup Switch Proxy Query Count
+## Startup Switch Proxy Query Count {#startup-switch-proxy-query-count}
 
 This interval is analogous to the Startup Query Count in {{!-IGMPv3, Section 8.7}} and {{!-MLDv2, Section 9.7}}, except it denotes the number of General Proxy Queries sent on startup, separated by the Startup Switch Proxy Query Interval.
 
