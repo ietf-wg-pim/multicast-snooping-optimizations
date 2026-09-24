@@ -22,6 +22,7 @@ author:
     ins: N. Karstens
     name: Nate Karstens
     org: Garmin International
+    abbrev: Garmin
     email: nate.karstens@garmin.com
 
   -
@@ -46,6 +47,7 @@ author:
     ins: J. Huang
     name: Joseph Huang
     org: Garmin International
+    abbrev: Garmin
     email: joseph.huang@garmin.com
 
 normative:
