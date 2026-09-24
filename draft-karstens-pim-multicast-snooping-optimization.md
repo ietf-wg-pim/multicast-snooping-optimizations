@@ -50,6 +50,21 @@ author:
     abbrev: Garmin
     email: joseph.huang@garmin.com
 
+contributor:
+  - >
+      The authors would like to recognize the following individuals for their contributions to this research:
+
+  -
+    name: David Vandewalle
+    org: Garmin International
+    abbrev: Garmin
+    email: david.vandewalle@garmin.com
+
+  -
+    name: Princy Elizabeth
+    org: Juniper Networks
+    email: princy@juniper.net
+
 normative:
   RFC3376:
     -: IGMPv3
@@ -297,13 +312,3 @@ To be added.
 This document does not have any IANA assignments/requests.
 
 --- back
-
-# Acknowledgements
-{: numbered="false"}
-
-The authors would like to recognize the following individuals for their contributions to this research:
-
-* David Vandewalle<br />
-  Garmin International
-* Princy Elizabeth<br />
-  Juniper Networks
