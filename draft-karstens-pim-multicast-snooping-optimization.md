@@ -164,9 +164,9 @@ TODO: do we want to define "multicast snooping switch"? Should we have an abbrev
 
 {{!-SNOOP, Section 2.1.1}} describes a special-case IGMP Query message with an IPv4 source address of 0.0.0.0. It would appear that the equivalent for MLD would be a Query message with the IPv6 source address set to the unspecified address (::), but several documents prohibit this:
 
-* {{?RFC2710, Section 3}} requires all MLD messages to be sent with a IPv6 link-local source address
+* {{?RFC2710, Section 3}} requires all MLD messages to be sent with an IPv6 link-local source address
 * {{?RFC3590, Section 4}} requires MLD Query messages to be sent with a valid IPv6 link-local source address
-* {{?-MLDv2, Section 5.1.14}} not only requires MLD Query messages to be sent with a valid IPv6 link-local source address, but also that nodes MUST discard Query messages with an IPv6 source address that is not a valid IPv6 link-local address
+* {{?-MLDv2, Section 5.1.14}} requires both that MLD Query messages be sent with a valid IPv6 link-local source address and that nodes discard Query messages without a valid IPv6 link-local source address
 
 Instead of working against established precedent, this document assigns a new flag in the "IGMP/MLD Query Message Flags" registry: the P (Proxy Query) flag. If an IPv6 multicast router receives a Query with the P flag set, then it SHALL NOT use that message in the querier election process described in {{?-MLDv2, Section 7.6.2}}. To conserve flags and avoid duplicate functionality, this assignment is only made for MLD Query messages; the flag remains unassigned for IGMP Query messages.
 
