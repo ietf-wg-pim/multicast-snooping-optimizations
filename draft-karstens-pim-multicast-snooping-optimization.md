@@ -66,21 +66,21 @@ contributor:
     email: princy@juniper.net
 
 normative:
-  RFC3376:
-    -: IGMPv3
-    display: IGMPv3
   RFC3569:
     -: SSM
     display: SSM
-  RFC3810:
-    -: MLDv2
-    display: MLDv2
   RFC4541:
     -: SNOOP
     display: SNOOP
   RFC7761:
     -: PIM-SM
     display: PIM-SM
+  RFC9776:
+    -: IGMPv3
+    display: IGMPv3
+  RFC9777:
+    -: MLDv2
+    display: MLDv2
 
 --- abstract
 
