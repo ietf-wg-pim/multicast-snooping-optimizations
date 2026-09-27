@@ -148,7 +148,9 @@ However, this document uses a different approach, choosing instead to use Genera
 
 Multicast snooping switches implementing this design shall use {{!-IGMPv3}}, {{!-MLDv2}}, or both. Multicast routers on the network must also use these protocol versions, {{!-PIM-SM}}, and satisfy the requirements listed in {{routers}}. Network hosts may use earlier versions of the protocols.
 
-## Terminology
+# Terminology
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 {{!RFC2119}} {{!RFC8174}} when, and only when, they appear in all capitals, as shown here.
 
 This document refers to IGMP snooping and MLD snooping collectively as "multicast snooping".
 
