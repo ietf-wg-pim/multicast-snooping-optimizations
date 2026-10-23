@@ -3,8 +3,8 @@ coding: utf-8
 
 title: Multicast Snooping Optimizations
 abbrev: Multicast Snooping Optimizations
-docname: draft-karstens-pim-multicast-snooping-optimization-02
-date: 2026-10-10
+docname: draft-karstens-pim-multicast-snooping-optimization-03
+date: 2026-10-23
 updates: 3810, 4541
 category: std
 submissionType: IETF
