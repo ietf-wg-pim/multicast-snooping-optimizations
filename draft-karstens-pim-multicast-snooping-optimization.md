@@ -26,29 +26,29 @@ author:
     email: nate.karstens@garmin.com
 
   -
-    ins: Z. Zhang
-    name: Zhaohui Zhang
-    org: Juniper Networks
-    email: zzhang@juniper.net
-
-  -
-    ins: L. Giuliano
-    name: Lenny Giuliano
-    org: Juniper Networks
-    email: lenny@juniper.net
-
-  -
-    ins: N. Ashik
-    name: Naveen Ashik
-    org: Juniper Networks
-    email: nashik@juniper.net
-
-  -
     ins: J. Huang
     name: Joseph Huang
     org: Garmin International
     abbrev: Garmin
     email: joseph.huang@garmin.com
+
+  -
+    ins: Z. Zhang
+    name: Zhaohui Zhang
+    org: HPE
+    email: zhaohui.zhang@hpe.com
+
+  -
+    ins: L. Giuliano
+    name: Lenny Giuliano
+    org: HPE
+    email: lenny@hpe.com
+
+  -
+    ins: N. Ashik
+    name: Naveen Ashik
+    org: HPE
+    email: naveen.ashik@hpe.com
 
 contributor:
   - >
@@ -62,8 +62,8 @@ contributor:
 
   -
     name: Princy Elizabeth
-    org: Juniper Networks
-    email: princy@juniper.net
+    org: HPE
+    email: princy.elizabeth@hpe.com
 
 normative:
   RFC3569:
