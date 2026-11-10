@@ -63,7 +63,7 @@ informative:
 
 --- abstract
 
-TODO: provide abstract
+Some IGMP/MLD snooping switches send Queries, known as Proxy Queries, to solicit Membership Reports from hosts, for example after a Spanning Tree topology change. RFC 4541 describes how these Queries are identified and asks that they be excluded from Querier election, but as an Informational document it does not update the IGMP and MLD specifications, and its recommendation for MLD conflicts with them. This document specifies how multicast routers identify Proxy Queries and exclude them from Querier election: by the source address 0.0.0.0 in IGMP, and by a new P (Proxy Query) flag in MLD. This document updates RFCs 4541, 9776, and 9777.
 
 --- middle
 
@@ -118,7 +118,7 @@ Operators deploying devices that send MLD Proxy Query messages onto a network wi
 
 # Security Considerations
 
-TODO
+Proxy Queries are subject to the same validation as other IGMP Membership Queries {{!-IGMPv3}} and MLD Multicast Listener Queries {{!-MLDv2}}. Because routers exclude Proxy Queries from Querier election, a device cannot become the Querier by sending them; a device that wants to influence Querier election can already do so with ordinary Queries, as described in the security considerations of {{!-IGMPv3}} and {{!-MLDv2}}. Like any Query, a Proxy Query causes hosts to send reports, so a device that sends Proxy Queries at a high rate can increase report traffic on the link. In IGMP, Proxy Queries use the source address 0.0.0.0, so their sender cannot be identified from the source address.
 
 # IANA Considerations
 
